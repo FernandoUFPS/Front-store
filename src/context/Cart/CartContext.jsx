@@ -45,23 +45,23 @@ export const CartProvider = ({ children }) => {
   };
 
   /* Creamos la funcion para borrar productos del carrito */
-  const DeleteItemToCart = (productId) => {
+  const DeleteItemToCart = (product_id) => {
     /* Buscamos el producto con su id */
     const inCart = cartItems.find(
-      (productInCart) => productInCart.id === productId
+      (productInCart) => productInCart.id === product_id
     );
 
     /* Si la cantidad del producto es igual a 1, filtramos el carrito y lo sacamos */
     if (inCart.amount === 1) {
       setCartItems(
-        cartItems.filter((productInCart) => productInCart.id !== productId)
+        cartItems.filter((productInCart) => productInCart.id !== product_id)
       );
     } else {
       /* Si la cantidad es mayor a 1, recorremos el carrito
       y al producto le restamos uno en su cantidad, sino devolvemos el carrito como estaba */
       setCartItems(
         cartItems.map((productInCart) => {
-          if (productInCart.id === productId) {
+          if (productInCart.id === product_id) {
             return { ...inCart, amount: inCart.amount - 1 };
           } else return productInCart;
         })

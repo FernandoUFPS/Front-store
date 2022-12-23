@@ -1,39 +1,95 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { Col, Input, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Col,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Spinner,
+} from "reactstrap";
 import CartContext from "../../../../context/Cart/CartContext";
 import ProductContext from "../../../../context/products/ProductContext";
 import ShoppingContext from "../../../../context/shopping/ShoppingContext";
 import Header from "../../components/Header";
 import SimpleSlider from "../../components/SimpleSlider";
+import "../../../../../src/global.css";
 const url = "https://source.unsplash.com/random/?";
+
 const Detail = () => {
   const { id } = useParams();
   const { getProduct, product, isLoading } = useContext(ProductContext);
   const { postData } = useContext(ShoppingContext);
   const { AddItemToCart } = useContext(CartContext);
   const [amount, setAmount] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
     (async () => {
       await getProduct(id);
     })();
-  }, [id]);
-  if (isLoading) {
-    return <Spinner color="primary" />;
-  }
+  }, []);
+
   const handleAmount = (e) => setAmount(e);
+
   const onBuy = async (id) => {
     if (amount < 1) {
       toast.error("Por favor selecciona una cantidad");
       return;
     }
-    const data = { productId: id, amount: amount };
+    const data = { product_id: id, amount: amount };
     await postData(data);
     await getProduct(id);
+    setOpenModal(true);
   };
+
+  if (isLoading) {
+    return <Spinner color="primary" />;
+  }
+
   return (
     <>
+      <div>
+        <Modal isOpen={openModal} /* toggle={toggle} {...args} */>
+          <ModalHeader /* toggle={toggle} */>Compra exitosa</ModalHeader>
+          <ModalBody>
+            <div className="paragraphOne">
+              <p>Factura electronica #:</p>
+              <p style={{ paddingLeft: "2%" }}>{parseInt(Math.random() * 999, 10)}</p>
+            </div>
+            <div className="paragraphOne">
+              <p>Nombre:</p>
+              <p style={{ paddingLeft: "2%" }}>{product?.name}</p>
+            </div>
+            <div className="paragraphOne">
+              <p>cantidad:</p>
+              <p style={{ paddingLeft: "2%" }}>{amount}</p>
+            </div>
+            <div className="paragraphOne">
+              <p>Subtotal:</p>
+              <p style={{ paddingLeft: "2%" }}>${amount * (product.price * ((100 - product.percent) / 100))}</p>
+            </div>
+            <div className="paragraphOne">
+              <p>IVA:</p>
+              <p style={{ paddingLeft: "2%" }}>{(amount * (product.price * ((100 - product.percent) / 100))) * 0.19}</p>
+            </div>
+            <div className="paragraphOne">
+              <p>Total:</p>
+              <p style={{ paddingLeft: "2%" }}>${(amount * (product.price * ((100 - product.percent) / 100))) + (amount * (product.price * ((100 - product.percent) / 100))) * 0.19}</p>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => setOpenModal(false)}>
+              Finalizar Compra
+            </Button>{" "}
+            <Button color="secondary" onClick={() => setOpenModal(false)}>Aceptar</Button>
+          </ModalFooter>
+        </Modal>
+      </div>
       <Header />
       <div className="container-lg">
         <Row className="p-2">

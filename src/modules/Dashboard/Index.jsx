@@ -19,15 +19,17 @@ const Index = () => {
       name: "shoes",
     },
   });
-  const { getProducts, products, postData, putData, isLoading } =
+  const { getProducts, products, postData, putData, isLoading, delData } =
     useContext(ProductContext);
   const { getCategories, categories } = useContext(CategoryContext);
+
   useEffect(() => {
     (async () => {
-      await getProducts();
+      //await getProducts();
       await getCategories();
     })();
   }, []);
+
   const addProduct = async () => {
     await postData(data);
     await getProducts();
@@ -55,6 +57,7 @@ const Index = () => {
         putData={putData}
         isLoading={isLoading}
         categories={categories}
+        delData={delData}
       />
     </>
   );

@@ -28,7 +28,9 @@ const Header = () => {
     (previous, current) => previous + current.amount * current.price,
     0
   );
+
   const toggle = () => setOpen(!open);
+  
   const onBuyCart = async () => {
     if (cartItems.length < 1) {
       toast.error("Oops! Ha ocurrido un error. Intentalo mas tarde");
@@ -36,13 +38,14 @@ const Header = () => {
     }
     const productsCart = cartItems.map((el) => {
       return {
-        productId: el.id,
+        product_id: el.id,
         amount: el.amount,
       };
     });
     const data = { products: productsCart };
     await postDataCart(data);
   };
+
   return (
     <header>
       <Toaster />

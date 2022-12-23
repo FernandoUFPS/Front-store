@@ -21,7 +21,11 @@ const ProductProvider = ({ children }) => {
   const getProducts = async () => {
     setIsLoading(true);
     await api.get(url).then((res) => {
-      setProducts(res);
+      // console.log(res);
+      let arrProduct = [];
+      arrProduct = res.filter( prod => prod.status === "CREATED" )
+      // console.log(arrProduct);
+      setProducts(arrProduct);
       setIsLoading(false);
     });
   };
@@ -58,14 +62,18 @@ const ProductProvider = ({ children }) => {
     });
   };
   const delData = async (product_id) => {
-    let endpoint = url + product_id;
+    let endpoint = url + `/${product_id}`;
     let options = {
       body: "",
       headers: { "content-type": "application/json" },
     };
     await api.del(endpoint, options).then((res) => {
       if (!res.err) {
-        console.log("Eliminado");
+        toast.success("Producto eliminado");
+        // console.log("Eliminado");
+        // console.log(res);
+      }else{
+        toast.error("uffs perro jijijiputa no se puede eliminar");
       }
     });
   };

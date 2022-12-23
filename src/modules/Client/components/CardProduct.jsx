@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import CartContext from "../../../context/Cart/CartContext";
 //const url ="http://magento2.magentech.com/themes/sm_marketnew/pub/media/catalog/product/cache/3ae7faad2935b0e1f9ccb39783811eb6/f/-/f-7_1.jpg";
 const url = "https://source.unsplash.com/random/?";
+
 const CardProduct = ({ product }) => {
+
   const { AddItemToCart } = useContext(CartContext);
+  
   return (
     <div className="d-block me-5 ms-5">
       <Link className="m-auto" to={`/products/${product.id}`}>

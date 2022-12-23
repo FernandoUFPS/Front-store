@@ -25,7 +25,7 @@ export const ShoppingProvider = ({ children }) => {
     });
     await Promise.all(
       result.map(async (el, index) => {
-        const product = await fetch(urlProduct + `products/${el.productId}`);
+        const product = await fetch(urlProduct + `products/${el.product_id}`);
         const resJson = await product.json();
         result[index] = { ...el, product: resJson };
       })

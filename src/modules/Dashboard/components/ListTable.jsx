@@ -10,6 +10,7 @@ const ListTable = ({
   putData,
   isLoading,
   categories,
+  delData
 }) => {
   const { patchData } = useContext(ShoppingContext);
   const [modal, setmodal] = useState(false);
@@ -20,7 +21,7 @@ const ListTable = ({
     },
   });
   const [discount, setDiscount] = useState({
-    productId: "",
+    product_id: "",
     percent: 0,
     isOffSale: true,
   });
@@ -28,11 +29,19 @@ const ListTable = ({
   const editToggle = (item) => {
     setData(item);
     setDiscount({
-      productId: item.id,
+      product_id: item.id,
       percent: item.percent,
       isOffSale: item.isOffSale,
     });
     toggle();
+  };
+
+  const deleteProduct = async (prod_id) => {
+    if (prod_id) {
+      await delData(prod_id);
+      await getProducts();
+      // toggle();
+    }
   };
 
   const editProduct = async () => {
@@ -94,7 +103,7 @@ const ListTable = ({
                         <i
                           role={"button"}
                           className="bx bx-trash me-1"
-                          onClick={() => editToggle(product.id)}
+                          onClick={() => deleteProduct(product.id)}
                         ></i>
                       </td>
                     </tr>

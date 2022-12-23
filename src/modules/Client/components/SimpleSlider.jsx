@@ -4,13 +4,16 @@ import "../assets/slick.css";
 import "../assets/slick-theme.css";
 import CardProduct from "./CardProduct";
 import ProductContext from "../../../context/products/ProductContext";
+
 const SimpleSlider = () => {
   const { getProducts, products, isLoading } = useContext(ProductContext);
+
   useEffect(() => {
     (async () => {
       await getProducts();
     })();
   }, []);
+
   const settings = {
     dots: true,
     infinite: true,
